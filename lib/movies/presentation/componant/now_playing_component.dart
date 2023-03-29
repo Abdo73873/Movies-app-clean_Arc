@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies/movies/presentation/componant/widget_component.dart';
 
 import '../../../core/network/api_constant.dart';
 import '../../../core/utils/enums.dart';
@@ -15,20 +16,17 @@ class NowPlayingComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MoviesBloc, MoviesState>(
+      buildWhen: (previous, current) =>previous.nowPlayingState!=current.nowPlayingState ,
       builder: (context, state) {
         switch(state.nowPlayingState){
           case RequestState.loading:
-            return const SizedBox(
-              height: 400,
-                child: Center(child: CircularProgressIndicator(
-                  color: Colors.white,
-                )));
+            return  circularProgress(height: 400);
           case RequestState.loaded:
           return FadeIn(
             duration: const Duration(milliseconds: 500),
             child: CarouselSlider(
               options: CarouselOptions(
-                height: 500.0,
+                height: 400.0,
                 viewportFraction: 1.0,
                 onPageChanged: (index, reason) {},
               ),
@@ -114,9 +112,7 @@ class NowPlayingComponent extends StatelessWidget {
             ),
           );
           case RequestState.error:
-          return SizedBox(
-            height: 400,
-              child: Center(child: Text(state.nowPlayingErrorMessage)));
+          return errorMessageWidget(state.nowPlayingErrorMessage);
         }
       },
     );
