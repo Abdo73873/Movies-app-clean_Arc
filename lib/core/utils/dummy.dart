@@ -1,3 +1,4 @@
+/*
 
 import '../../movies/domain/entites/movie.dart';
 
@@ -87,3 +88,4 @@ List<Movie> moviesList = [
     voteAverage: 5.0,
   ),
 ];
+*/
