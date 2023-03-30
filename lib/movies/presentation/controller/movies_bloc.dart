@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:movies/core/usecase/base_usecase.dart';
 import 'package:movies/core/utils/enums.dart';
 import 'package:movies/movies/domain/usecases/get_nowplaying_movies.dart';
 import 'package:movies/movies/domain/usecases/get_popular_movies.dart';
@@ -28,7 +29,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   }
 
   FutureOr<void> _getPlayingMovies(event, emit) async{
-      final result = await getNowPlayingMoviesUseCase.execute();
+      final result = await getNowPlayingMoviesUseCase(const NoParameters());
       result.fold(
               (l) => emit(
               state.copyWith(nowPlayingErrorMessage: l.message,
@@ -37,14 +38,14 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
               nowPlayingMovies: list, nowPlayingState: RequestState.loaded)));
   }
   FutureOr<void> _getPopularMovies (event,emit)async {
-    final result=await getPopularMoviesUseCase.execute();
+    final result=await getPopularMoviesUseCase(const NoParameters());
     result.fold(
           (l) => emit(state.copyWith(popularErrorMessage: l.message,popularState: RequestState.error)),
           (r) => emit(state.copyWith(popularMovies: r,popularState: RequestState.loaded)),
     );
   }
   FutureOr<void> _getTopRatedMovies(event,emit)async {
-    final result=await getTopRatedMoviesUseCase.execute();
+    final result=await getTopRatedMoviesUseCase(const NoParameters());
     result.fold(
           (l) => emit(state.copyWith(topRatedErrorMessage: l.message,topRatedState: RequestState.error)),
           (r) => emit(state.copyWith(topRatedMovies: r,topRatedState: RequestState.loaded)),
